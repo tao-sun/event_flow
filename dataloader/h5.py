@@ -55,7 +55,7 @@ class H5Loader(BaseDataLoader):
 
         # input event sequences
         self.files = []
-        for root, dirs, files in os.walk(config["data"]["path"]):
+        for root, dirs, files in os.walk(config["data"]["path"], followlinks=True):
             for file in files:
                 if file.endswith(".h5"):
                     self.files.append(os.path.join(root, file))
