@@ -25,7 +25,6 @@ class ConvLayer(nn.Module):
         norm=None,
         BN_momentum=0.1,
         w_scale=None,
-        mc_dropout=0.5
     ):
         super(ConvLayer, self).__init__()
 
@@ -49,8 +48,6 @@ class ConvLayer(nn.Module):
             self.norm_layer = nn.BatchNorm2d(out_channels, momentum=BN_momentum)
         elif norm == "IN":
             self.norm_layer = nn.InstanceNorm2d(out_channels, track_running_stats=True)
-        
-        self.mc_dropout = mc_dropout
 
     def forward(self, x):
         out = self.conv2d(x)
@@ -60,8 +57,6 @@ class ConvLayer(nn.Module):
 
         if self.activation is not None:
             out = self.activation(out)
-        if self.mc_dropout:
-            out = F.dropout(out, self.mc_dropout, training=True)
         
         return out
 

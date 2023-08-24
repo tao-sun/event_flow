@@ -168,6 +168,7 @@ class FireNet(BaseModel):
         self.norm_input = False if "norm_input" not in unet_kwargs.keys() else unet_kwargs["norm_input"]
         self.mask = unet_kwargs["mask_output"]
         ff_act, rec_act = unet_kwargs["activations"]
+        mc_dropout = unet_kwargs["mc_dropout"] if "mc_dropout" in unet_kwargs else None
         if type(unet_kwargs["spiking_neuron"]) is dict:
             for kwargs in self.kwargs:
                 kwargs.update(unet_kwargs["spiking_neuron"])

@@ -1,13 +1,13 @@
 experiment: Default
 
 data:
-    path: datasets/data/training/
+    path: /home2/data/event_flow/training
     mode: events # events
     window: 1000 # events
     window_loss: 10000 # events
 
 model:
-    name: LIFFireNet # for other models available, see models/model.py
+    name: PLIFFireNet # for other models available, see models/model.py
     encoding: cnt # voxel/cnt
     round_encoding: False # for voxel encoding
     norm_input: False # normalize input
@@ -18,11 +18,12 @@ model:
     mask_output: True
 
 spiking_neuron:
-    leak: [-4.0, 0.1]
+    # leak: [-4.0, 0.1]
     thresh: [0.8, 0.1]
     learn_leak: True
     learn_thresh: True
     hard_reset: True
+    mc_dropout: 0.3
     
 loss:
     flow_regul_weight: 0.001

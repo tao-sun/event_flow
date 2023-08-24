@@ -156,6 +156,7 @@ class ConvPLIF(nn.Module):
         hard_reset=True,
         detach=True,
         norm=None,
+        mc_dropout=0.5
     ):
         super().__init__()
 
@@ -193,6 +194,8 @@ class ConvPLIF(nn.Module):
         self.hard_reset = hard_reset
         self.detach = detach
 
+        self.mc_dropout = mc_dropout
+
     def forward(self, input_, prev_state, residual=0):
         # input current
         ff = self.ff(input_)
@@ -228,6 +231,8 @@ class ConvPLIF(nn.Module):
 
         # spike
         z_out = self.spike_fn(v_out, thresh, self.act_width)
+        if self.mc_dropout:
+            z_out = F.dropout(z_out, self.mc_dropout, training=True)
 
         return z_out + residual, torch.stack([v_out, z_out, pt_out])
 
@@ -585,6 +590,7 @@ class ConvPLIFRecurrent(nn.Module):
         hard_reset=True,
         detach=True,
         norm=None,
+        mc_dropout=0.5
     ):
         super().__init__()
 
@@ -625,6 +631,8 @@ class ConvPLIFRecurrent(nn.Module):
         self.hard_reset = hard_reset
         self.detach = detach
 
+        self.mc_dropout = mc_dropout
+
     def forward(self, input_, prev_state, residual=0):
         # input current
         ff = self.ff(input_)
@@ -663,6 +671,8 @@ class ConvPLIFRecurrent(nn.Module):
 
         # spike
         z_out = self.spike_fn(v_out, thresh, self.act_width)
+        if self.mc_dropout:
+            z_out = F.dropout(z_out, self.mc_dropout, training=True)
 
         return z_out + residual, torch.stack([v_out, z_out, pt_out])
 
